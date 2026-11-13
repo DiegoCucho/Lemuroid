@@ -1,8 +1,11 @@
 package com.swordfish.lemuroid.netplay
 
+import com.swordfish.lemuroid.netplay.transport.DEFAULT_TCP_PORT
+import com.swordfish.lemuroid.netplay.transport.HostAddress
 import com.swordfish.lemuroid.netplay.transport.LocalAddress
 import com.swordfish.lemuroid.netplay.transport.NetworkAddresses
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import java.net.InetAddress
 
@@ -68,5 +71,53 @@ class NetworkAddressesTest {
         NetworkAddresses.localAddresses().forEach {
             assertEquals(false, it.address.isEmpty())
         }
+    }
+
+    @Test
+    fun convertsTheLittleEndianAddressesOfAndroid() {
+        assertEquals("192.168.0.1", NetworkAddresses.ipv4FromLittleEndian(0x0100A8C0))
+        assertEquals("192.168.43.1", NetworkAddresses.ipv4FromLittleEndian(0x012BA8C0))
+        assertEquals("255.255.255.255", NetworkAddresses.ipv4FromLittleEndian(-1))
+        assertNull(NetworkAddresses.ipv4FromLittleEndian(0))
+    }
+
+    @Test
+    fun parsesAddressesTypedByThePlayer() {
+        assertEquals(HostAddress("192.168.43.1", DEFAULT_TCP_PORT), NetworkAddresses.parseHostAddress("192.168.43.1"))
+        assertEquals(HostAddress("10.0.0.2", 48600), NetworkAddresses.parseHostAddress("10.0.0.2:48600"))
+        assertEquals(HostAddress("10.0.0.2", DEFAULT_TCP_PORT), NetworkAddresses.parseHostAddress("  10.0.0.2  "))
+        assertEquals(HostAddress("10.0.0.2", 9), NetworkAddresses.parseHostAddress("10.0.0.2", defaultPort = 9))
+    }
+
+    @Test
+    fun normalizesLeadingZerosSoTheyAreNotReadAsOctal() {
+        val parsed = NetworkAddresses.parseHostAddress("192.168.001.010")
+
+        assertEquals(HostAddress("192.168.1.10", DEFAULT_TCP_PORT), parsed)
+    }
+
+    @Test
+    fun rejectsAddressesThatAreNotValidIpv4() {
+        val invalid =
+            listOf(
+                "",
+                "   ",
+                "localhost",
+                "192.168.1",
+                "192.168.1.1.1",
+                "192.168.1.256",
+                "192.168.1.-1",
+                "192.168..1",
+                "192.168.1.a",
+                "192.168.1.1:",
+                "192.168.1.1:0",
+                "192.168.1.1:65536",
+                "192.168.1.1:abc",
+                "192.168.1.1:80:90",
+                "1234.1.1.1",
+                "\u0663.1.1.1", // A non-ASCII digit.
+            )
+
+        invalid.forEach { assertNull("Should be invalid: '$it'", NetworkAddresses.parseHostAddress(it)) }
     }
 }

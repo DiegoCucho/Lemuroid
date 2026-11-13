@@ -120,7 +120,8 @@ class MessageCodecTest {
 
     @Test
     fun negativeLengthsAreRejected() {
-        expectProtocolError(byteArrayOf(0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte(), 0xFF.toByte()), "Invalid frame length")
+        val allOnes = ByteArray(4) { 0xFF.toByte() }
+        expectProtocolError(allOnes, "Invalid frame length")
     }
 
     @Test
