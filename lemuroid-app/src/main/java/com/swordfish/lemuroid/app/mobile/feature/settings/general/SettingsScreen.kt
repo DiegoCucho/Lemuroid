@@ -82,6 +82,12 @@ private fun MiscSettings(
             )
         }
         LemuroidSettingsMenuLink(
+            title = { Text(text = stringResource(id = R.string.netplay_title)) },
+            subtitle = { Text(text = stringResource(id = R.string.netplay_description)) },
+            enabled = !indexingInProgress,
+            onClick = { navController.navigateToRoute(MainRoute.NETPLAY) },
+        )
+        LemuroidSettingsMenuLink(
             title = { Text(text = stringResource(id = R.string.settings_title_open_cores_selection)) },
             subtitle = {
                 Text(text = stringResource(id = R.string.settings_description_open_cores_selection))

@@ -97,6 +97,12 @@ enum class MainRoute(
         parent = SETTINGS,
         showBottomNavigation = false,
     ),
+    NETPLAY(
+        route = "netplay",
+        titleId = R.string.netplay_title,
+        parent = SETTINGS,
+        showBottomNavigation = false,
+    ),
     ;
 
     val root = root()
