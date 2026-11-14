@@ -4,6 +4,7 @@ import com.swordfish.lemuroid.netplay.protocol.MismatchReason
 import com.swordfish.lemuroid.netplay.rom.GameFingerprint
 import com.swordfish.lemuroid.netplay.rom.RomFingerprint
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -75,5 +76,50 @@ class RomFingerprintTest {
         val upper = GameFingerprint("snes", 10, "ABCDEF")
 
         assertNull(lower.incompatibilityWith(upper))
+    }
+
+    private fun stream(text: String) = ByteArrayInputStream(text.toByteArray())
+
+    @Test
+    fun aSingleFileGivesTheSameResultWithComputeAll() {
+        val single = RomFingerprint.compute("psx", stream("track"))
+        val all = RomFingerprint.computeAll("psx", listOf(stream("track")))
+
+        assertEquals(single, all)
+    }
+
+    @Test
+    fun multiFileGamesIgnoreTheOrderOfTheFiles() {
+        val first = RomFingerprint.computeAll("psx", listOf(stream("cue"), stream("bin1"), stream("bin2")))
+        val second = RomFingerprint.computeAll("psx", listOf(stream("bin2"), stream("cue"), stream("bin1")))
+
+        assertEquals(first, second)
+        assertEquals(11L, first.sizeBytes)
+    }
+
+    @Test
+    fun multiFileGamesNoticeAChangedFile() {
+        val original = RomFingerprint.computeAll("psx", listOf(stream("cue"), stream("bin1")))
+        val changed = RomFingerprint.computeAll("psx", listOf(stream("cue"), stream("bin2")))
+
+        assertFalse(original.sha256 == changed.sha256)
+        assertEquals(MismatchReason.ROM_CONTENT, original.incompatibilityWith(changed))
+    }
+
+    @Test
+    fun multiFileGamesAreDifferentFromTheirFilesMergedIntoOne() {
+        val several = RomFingerprint.computeAll("psx", listOf(stream("ab"), stream("cd")))
+        val merged = RomFingerprint.compute("psx", stream("abcd"))
+
+        assertFalse(several.sha256 == merged.sha256)
+    }
+
+    @Test
+    fun multiFileProgressKeepsGrowingAcrossFiles() {
+        val progress = mutableListOf<Long>()
+
+        RomFingerprint.computeAll("psx", listOf(stream("1234"), stream("56"))) { progress.add(it) }
+
+        assertEquals(listOf(4L, 6L), progress)
     }
 }

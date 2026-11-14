@@ -43,12 +43,18 @@ class NetworkAddressesTest {
         val result =
             NetworkAddresses.selectUsable(
                 listOf(
-                    candidate("wlan0", "8.8.8.8"), // Public address.
-                    candidate("wlan0", "fe80::1"), // IPv6.
-                    candidate("wlan0", "169.254.1.1"), // Link-local.
-                    candidate("wlan0", "172.32.0.1"), // Just outside the private 172.16/12 range.
-                    candidate("rmnet_data0", "10.1.2.3"), // Mobile data.
-                    candidate("tun0", "10.8.0.2"), // VPN.
+                    // Public address.
+                    candidate("wlan0", "8.8.8.8"),
+                    // IPv6.
+                    candidate("wlan0", "fe80::1"),
+                    // Link-local.
+                    candidate("wlan0", "169.254.1.1"),
+                    // Just outside the private 172.16/12 range.
+                    candidate("wlan0", "172.32.0.1"),
+                    // Mobile data.
+                    candidate("rmnet_data0", "10.1.2.3"),
+                    // VPN.
+                    candidate("tun0", "10.8.0.2"),
                 ),
             )
 
@@ -115,7 +121,8 @@ class NetworkAddressesTest {
                 "192.168.1.1:abc",
                 "192.168.1.1:80:90",
                 "1234.1.1.1",
-                "\u0663.1.1.1", // A non-ASCII digit.
+                // A non-ASCII digit.
+                "\u0663.1.1.1",
             )
 
         invalid.forEach { assertNull("Should be invalid: '$it'", NetworkAddresses.parseHostAddress(it)) }
