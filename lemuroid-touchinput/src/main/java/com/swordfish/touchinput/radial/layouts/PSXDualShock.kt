@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import com.swordfish.touchinput.controller.R
-import com.swordfish.touchinput.radial.controls.LemuroidControlCross
 import com.swordfish.touchinput.radial.controls.LemuroidControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
+import com.swordfish.touchinput.radial.layouts.shared.LemuroidDirectionalControl
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryAnalogLeft
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryAnalogRight
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonL1
@@ -33,7 +33,7 @@ fun PadKitScope.PSXDualShockLeft(
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
-        primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
+        primaryDial = { LemuroidDirectionalControl(settings, ComposeTouchLayouts.MOTION_SOURCE_DPAD) },
         secondaryDials = {
             SecondaryButtonL1()
             SecondaryButtonL2()

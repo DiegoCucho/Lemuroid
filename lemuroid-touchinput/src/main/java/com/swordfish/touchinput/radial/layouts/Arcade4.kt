@@ -4,9 +4,9 @@ import android.view.KeyEvent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
-import com.swordfish.touchinput.radial.controls.LemuroidControlCross
 import com.swordfish.touchinput.radial.controls.LemuroidControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
+import com.swordfish.touchinput.radial.layouts.shared.LemuroidDirectionalControl
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonCoin
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenuPlaceholder
@@ -27,7 +27,7 @@ fun PadKitScope.Arcade4Left(
         settings = settings,
         modifier = modifier,
         primaryDial = {
-            LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD_AND_LEFT_STICK))
+            LemuroidDirectionalControl(settings, ComposeTouchLayouts.MOTION_SOURCE_DPAD_AND_LEFT_STICK)
         },
         secondaryDials = {
             SecondaryButtonCoin()

@@ -22,6 +22,8 @@ import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -321,6 +323,9 @@ private fun MenuEditTouchControls(
                         )
                     }
                 }
+                DirectionalControlTypeRow(touchControllerSettings) {
+                    viewModel.updateTouchControllerSettings(touchControllerSettings.copy(directionalControl = it))
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -340,6 +345,30 @@ private fun MenuEditTouchControls(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DirectionalControlTypeRow(
+    settings: TouchControllerSettingsManager.Settings,
+    onSelected: (TouchControllerSettingsManager.DirectionalControlType) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+    ) {
+        FilterChip(
+            selected = settings.directionalControl == TouchControllerSettingsManager.DirectionalControlType.CROSS,
+            onClick = { onSelected(TouchControllerSettingsManager.DirectionalControlType.CROSS) },
+            label = { Text(text = stringResource(R.string.touch_customize_direction_cross)) },
+        )
+        FilterChip(
+            selected = settings.directionalControl == TouchControllerSettingsManager.DirectionalControlType.JOYSTICK,
+            onClick = { onSelected(TouchControllerSettingsManager.DirectionalControlType.JOYSTICK) },
+            label = { Text(text = stringResource(R.string.touch_customize_direction_joystick)) },
+        )
     }
 }
 

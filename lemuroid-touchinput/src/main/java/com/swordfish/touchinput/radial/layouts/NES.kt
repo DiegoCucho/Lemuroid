@@ -4,9 +4,9 @@ import android.view.KeyEvent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
-import com.swordfish.touchinput.radial.controls.LemuroidControlCross
 import com.swordfish.touchinput.radial.controls.LemuroidControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
+import com.swordfish.touchinput.radial.layouts.shared.LemuroidDirectionalControl
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenuPlaceholder
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonSelect
@@ -26,7 +26,7 @@ fun PadKitScope.NESLeft(
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
-        primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
+        primaryDial = { LemuroidDirectionalControl(settings, ComposeTouchLayouts.MOTION_SOURCE_DPAD) },
         secondaryDials = {
             SecondaryButtonSelect()
             SecondaryButtonMenuPlaceholder(settings)

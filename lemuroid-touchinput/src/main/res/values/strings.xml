@@ -3,4 +3,6 @@
     <string name="touch_customize_button_done">Done</string>
     <string name="touch_customize_button_reset">Reset</string>
     <string name="touch_customize_info">Drag and Pinch controls to change position and size</string>
+    <string name="touch_customize_direction_cross">D-pad</string>
+    <string name="touch_customize_direction_joystick">Joystick</string>
 </resources>

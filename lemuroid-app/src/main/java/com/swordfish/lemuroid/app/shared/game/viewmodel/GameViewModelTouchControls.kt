@@ -16,6 +16,7 @@ import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_LE
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_ANALOG_RIGHT
 import com.swordfish.libretrodroid.GLRetroView.Companion.MOTION_SOURCE_DPAD
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
+import com.swordfish.touchinput.radial.layouts.shared.DigitalAxis
 import com.swordfish.touchinput.radial.settings.TouchControllerID
 import com.swordfish.touchinput.radial.settings.TouchControllerSettingsManager
 import gg.padkit.inputevents.InputEvent
@@ -206,6 +207,27 @@ class GameViewModelTouchControls(
                     yAxis,
                 )
                 retroGameView.retroGameView?.sendMotionEvent(MOTION_SOURCE_DPAD, xAxis, yAxis)
+            }
+
+            ComposeTouchLayouts.MOTION_SOURCE_DPAD_FROM_JOYSTICK -> {
+                retroGameView.retroGameView?.sendMotionEvent(
+                    MOTION_SOURCE_DPAD,
+                    DigitalAxis.fromAnalog(xAxis),
+                    DigitalAxis.fromAnalog(yAxis),
+                )
+            }
+
+            ComposeTouchLayouts.MOTION_SOURCE_DPAD_AND_LEFT_STICK_FROM_JOYSTICK -> {
+                retroGameView.retroGameView?.sendMotionEvent(
+                    MOTION_SOURCE_ANALOG_LEFT,
+                    xAxis,
+                    yAxis,
+                )
+                retroGameView.retroGameView?.sendMotionEvent(
+                    MOTION_SOURCE_DPAD,
+                    DigitalAxis.fromAnalog(xAxis),
+                    DigitalAxis.fromAnalog(yAxis),
+                )
             }
 
             ComposeTouchLayouts.MOTION_SOURCE_RIGHT_DPAD -> {

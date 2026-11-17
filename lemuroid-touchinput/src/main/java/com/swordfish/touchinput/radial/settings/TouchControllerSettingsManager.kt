@@ -23,12 +23,20 @@ class TouchControllerSettingsManager(private val sharedPreferences: SharedPrefer
         LANDSCAPE,
     }
 
+    /** What the player uses to move: a D-pad (cross) or a virtual joystick. */
+    @Serializable
+    enum class DirectionalControlType {
+        CROSS,
+        JOYSTICK,
+    }
+
     @Serializable
     data class Settings(
         val scale: Float = DEFAULT_SCALE,
         val rotation: Float = DEFAULT_ROTATION,
         val marginX: Float = DEFAULT_MARGIN_X,
         val marginY: Float = DEFAULT_MARGIN_Y,
+        val directionalControl: DirectionalControlType = DirectionalControlType.CROSS,
     )
 
     private fun computeInsetsPaddings(

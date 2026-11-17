@@ -6,9 +6,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.swordfish.touchinput.radial.controls.LemuroidControlButton
-import com.swordfish.touchinput.radial.controls.LemuroidControlCross
 import com.swordfish.touchinput.radial.controls.LemuroidControlFaceButtons
 import com.swordfish.touchinput.radial.layouts.shared.ComposeTouchLayouts
+import com.swordfish.touchinput.radial.layouts.shared.LemuroidDirectionalControl
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenu
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonMenuPlaceholder
 import com.swordfish.touchinput.radial.layouts.shared.SecondaryButtonSelect
@@ -30,7 +30,7 @@ fun PadKitScope.Genesis6Left(
     BaseLayoutLeft(
         settings = settings,
         modifier = modifier,
-        primaryDial = { LemuroidControlCross(id = Id.DiscreteDirection(ComposeTouchLayouts.MOTION_SOURCE_DPAD)) },
+        primaryDial = { LemuroidDirectionalControl(settings, ComposeTouchLayouts.MOTION_SOURCE_DPAD) },
         secondaryDials = {
             SecondaryButtonSelect(position = 0)
             SecondaryButtonStart(position = 1)
